@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鳖王计划</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Arial', sans-serif;
+        resize: vertical;
+    }
+    button {
+        padding: 10px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #5cb85c;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #4cae4c;
+    }
+    .item {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+    .copy-button {
+        margin-left: 10px;
+        cursor: pointer;
+        background-color: #f0ad4e;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .copy-button:hover {
+        background-color: #ec971f;
+    }
+    .footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>鳖王计划</h1>
+    <textarea id="inputText" rows="10" placeholder="在这里输入你的背包信息..."></textarea>
+    <button onclick="extractInfo()">提取信息</button>
+    <button onclick="refreshPage()">刷新页面</button>
+    <div id="result"></div>
+    <div class="footer">
+        遇到bug请不要找2928177085鳖群789642798。
+    </div>
+</div>
+
+<script>
+const bieziPrices = {
+    "鳖住": 1000000,
+    "鳖鳖住": 2000000,
+    "鳖鳖鳖住": 3000000,
+    "鳖鳖鳖鳖住": 4000000,
+    "鳖鳖鳖鳖鳖住": 5000000,
+    "鳖鳖鳖鳖鳖鳖住": 6000000,
+    "鳖鳖鳖鳖鳖鳖鳖住": 7000000,
+    "鳖鳖鳖鳖鳖鳖鳖鳖住": 8000000,
+    "鳖鳖鳖鳖鳖鳖鳖鳖鳖住": 9000000,
+    "鳖鳖鳖鳖鳖鳖鳖鳖鳖鳖住": 10000000,
+    "鳖鳖鳖鳖鳖鳖鳖鳖鳖鳖鳖住": 11000000
+};
+
+function extractInfo() {
+    const text = document.getElementById('inputText').value;
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+
+    const namePattern = /名字：([^\n：]+?)(?=\n|$)/g;
+    const quantityPattern = /数量：(\d+)(?=\n|$)/g;
+
+    let matches = text.match(namePattern);
+    let quantities = text.match(quantityPattern);
+
+    if (matches && quantities) {
+        for (let i = 0; i < matches.length; i++) {
+            const herbName = matches[i].replace('名字：', '').trim();
+            const quantity = parseInt(quantities[i].replace('数量：', '').trim(), 10);
+            const price = bieziPrices[herbName] || 0;
+
+            if (price > 0 && herbName.includes('鳖')) {
+                const priceText = `坊市上架 ${herbName} ${price} ${quantity}`;
+                resultDiv.innerHTML += `
+                    <div class="item">
+                        <span>${priceText}</span>
+                        <button class="copy-button" data-text="${priceText}" onclick="copyToClipboard(this)">复制</button>
+                    </div>
+                `;
+            }
+        }
+    }
+}
+
+function copyToClipboard(button) {
+    const text = button.getAttribute('data-text');
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';  // Prevent scrolling to bottom
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+        const successful = document.execCommand('copy');
+        const msg = successful ? '愿伞哥鳖王大成，恭迎我们的鳖王吧' : '我代表鳖王来向您道歉';
+        alert(msg);
+    } catch (err) {
+        alert('我代表鳖王向您道歉');
+    }
+    document.body.removeChild(textarea);
+}
+
+function refreshPage() {
+    window.location.reload();
+}
+</script>
+</body>
+</html>
